@@ -1,0 +1,29 @@
+appId: com.goingmyway.arxivstudio
+productName: ArXiv Studio
+directories:
+  output: release
+files:
+  - dist/**
+  - src/renderer/**
+  - config/app-config.example.json
+  - package.json
+extraMetadata:
+  main: dist/main/main.js
+asar: true
+mac:
+  category: public.app-category.productivity
+  target:
+    - target: dmg
+      arch:
+        - x64
+  artifactName: ArXiv-Studio-${version}-mac-${arch}.${ext}
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ArXiv-Studio-${version}-win-${arch}-setup.${ext}
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false

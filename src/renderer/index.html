@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <title>ArXiv Studio</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Desktop Research Console</p>
+          <h1>ArXiv Studio</h1>
+          <p class="hero__copy">
+            从 Zotero 收藏构建研究语料，生成桌面优先的 arXiv 每日推荐，并直接联动飞书推送和多模型 AI 问答。
+          </p>
+        </div>
+        <div class="hero__status">
+          <span class="hero__status-label">当前状态</span>
+          <div id="status" data-kind="info">准备就绪</div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside id="sidebar" class="sidebar">
+          <div class="sidebar__toolbar">
+            <button id="toggleSidebar" class="sidebar__toggle" type="button" aria-expanded="true" aria-controls="sidebarScroll">
+              <span id="toggleSidebarIcon" class="sidebar__toggle-icon">‹</span>
+              <span id="toggleSidebarLabel" class="sidebar__toggle-label">收起配置</span>
+            </button>
+          </div>
+
+          <div id="sidebarScroll" class="sidebar__scroll">
+            <section class="panel panel--compact">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">00</p>
+                  <h2>启动清单</h2>
+                </div>
+              </div>
+              <div id="setupChecklist" class="setup-checklist"></div>
+            </section>
+
+            <section class="panel panel--compact">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">01</p>
+                  <h2>Zotero + arXiv</h2>
+                </div>
+                <button id="saveZoteroConfig" class="button button--ghost">保存</button>
+              </div>
+              <div class="form-grid">
+                <label>
+                  <span>Zotero ID</span>
+                  <input id="zoteroId" type="text" placeholder="123456" />
+                </label>
+                <label>
+                  <span>Zotero API Key</span>
+                  <input id="zoteroKey" type="password" placeholder="输入你的 Zotero API Key" />
+                </label>
+                <label>
+                  <span>includePath</span>
+                  <input id="includePath" type="text" placeholder="例如 AI/** 或 LLMs/**" />
+                  <div class="field-hint">只保留匹配该路径模式的 Zotero 条目；留空表示不过滤。</div>
+                </label>
+                <label>
+                  <span>arXiv 分类</span>
+                  <input id="arxivCategories" type="text" placeholder="cs.AI,cs.CL,cs.LG" />
+                  <div class="field-hint">多个分类用英文逗号分隔，例如 `cs.AI,cs.CL,cs.LG`。</div>
+                </label>
+                <label>
+                  <span>推荐条数</span>
+                  <input id="maxResults" type="number" min="1" max="30" />
+                </label>
+              </div>
+            </section>
+
+            <section class="panel panel--compact">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">02</p>
+                  <h2>飞书推送</h2>
+                </div>
+                <button id="saveFeishuConfig" class="button button--ghost">保存</button>
+              </div>
+              <div class="form-grid">
+                <label>
+                  <span>Webhook</span>
+                  <input id="feishuWebhook" type="text" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/..." />
+                </label>
+                <label>
+                  <span>Secret</span>
+                  <input id="feishuSecret" type="password" placeholder="开启签名时填写" />
+                  <div class="field-hint">如果飞书机器人未开启签名校验，这里可以留空。</div>
+                </label>
+                <label class="toggle-field">
+                  <span>每日推送</span>
+                  <input id="dailyEnabled" type="checkbox" />
+                </label>
+                <label>
+                  <span>推送时间</span>
+                  <input id="dailyTime" type="time" />
+                  <div class="field-hint">应用运行时会按本机时间触发；关闭应用后不会后台推送。</div>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel panel--compact">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">03</p>
+                  <h2>AI 助手</h2>
+                </div>
+                <button id="saveChatConfig" class="button button--ghost">保存</button>
+              </div>
+              <div class="form-grid">
+                <label>
+                  <span>供应商</span>
+                  <select id="llmProvider">
+                    <option value="chatgpt">ChatGPT / OpenAI</option>
+                    <option value="claude">Claude / Anthropic</option>
+                    <option value="kimi">Kimi / Moonshot</option>
+                    <option value="deepseek">DeepSeek</option>
+                    <option value="glm">GLM / 智谱</option>
+                    <option value="gemini">Gemini / Google</option>
+                  </select>
+                </label>
+                <label>
+                  <span>API Key</span>
+                  <input id="llmApiKey" type="password" placeholder="输入该供应商的 API Key" />
+                </label>
+                <label>
+                  <span>Base URL</span>
+                  <input id="llmBaseUrl" type="text" placeholder="根据供应商自动填充" />
+                </label>
+                <label>
+                  <span>Model</span>
+                  <input id="llmModel" type="text" placeholder="填写模型名称" />
+                </label>
+                <div id="llmProviderHint" class="field-hint"></div>
+              </div>
+            </section>
+
+            <section class="panel panel--compact">
+              <div class="panel__head">
+                <div>
+                  <p class="eyebrow">04</p>
+                  <h2>配置文件</h2>
+                </div>
+              </div>
+              <div class="form-grid">
+                <label>
+                  <span>文件路径</span>
+                  <input id="configFilePath" type="text" placeholder="./config/app-config.json" />
+                  <div class="field-hint">适合团队共享配置模板；加载后会同步写入当前本地配置。</div>
+                </label>
+              </div>
+              <div class="button-row">
+                <button id="loadConfigFile" class="button button--secondary">从文件加载</button>
+                <button id="saveConfig" class="button">保存全部配置</button>
+              </div>
+            </section>
+          </div>
+        </aside>
+
+        <section class="content">
+          <section class="panel runway-panel">
+            <div class="panel__head panel__head--wide">
+              <div>
+                <p class="eyebrow">Workflow</p>
+                <h2>操作路径</h2>
+              </div>
+              <div id="readinessBadge" class="result-stamp">配置进度: 0/4</div>
+            </div>
+            <div class="runway-grid">
+              <div>
+                <p id="commandSummary" class="muted"></p>
+                <div class="guide-cards">
+                  <article class="guide-card">
+                    <span class="guide-card__step">Step 1</span>
+                    <h3>连通数据源</h3>
+                    <p>先填 Zotero ID、API Key 和 arXiv 分类，必要时再补 includePath。</p>
+                  </article>
+                  <article class="guide-card">
+                    <span class="guide-card__step">Step 2</span>
+                    <h3>验证推送</h3>
+                    <p>推荐生成稳定后，再填写飞书 Webhook 并做一次测试推送。</p>
+                  </article>
+                  <article class="guide-card">
+                    <span class="guide-card__step">Step 3</span>
+                    <h3>补齐问答</h3>
+                    <p>最后补当前模型供应商的 Base URL、API Key 和模型名，用推荐结果继续问答。</p>
+                  </article>
+                </div>
+              </div>
+              <div class="workspace-note">
+                <h3>当前工作台适合什么流程</h3>
+                <ul class="note-list">
+                  <li>桌面端先做配置和测试，确认推荐结果质量。</li>
+                  <li>准备公开发布时，把安装包放到 GitHub Releases 供下载。</li>
+                  <li>如果推荐为空，先看结果面板里的诊断信息，而不是盲目重试。</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel command-panel">
+            <div class="panel__head panel__head--wide">
+              <div>
+                <p class="eyebrow">Command Deck</p>
+                <h2>生成与推送</h2>
+              </div>
+              <div id="resultStamp" class="result-stamp">最近生成: 尚未运行</div>
+            </div>
+            <p class="muted">
+              先保存配置，再执行推荐。飞书测试会先重新生成一次推荐结果，再按当前 Webhook 配置发送。
+            </p>
+            <div class="button-row">
+              <button id="runNow" class="button">生成今日推荐</button>
+              <button id="testFeishu" class="button button--secondary">测试飞书推送</button>
+            </div>
+          </section>
+
+          <section class="panel results-panel">
+            <div class="panel__head panel__head--wide">
+              <div>
+                <p class="eyebrow">Results</p>
+                <h2>研究推荐面板</h2>
+              </div>
+            </div>
+            <div id="recommendationList" class="recommendation-list recommendation-list--empty"></div>
+          </section>
+
+          <section class="panel chat-panel">
+            <div class="panel__head panel__head--wide">
+              <div>
+                <p class="eyebrow">Ask</p>
+                <h2>论文问答</h2>
+              </div>
+              <div class="hint">支持 `Ctrl/Cmd + Enter` 发送</div>
+            </div>
+            <textarea
+              id="chatInput"
+              rows="5"
+              placeholder="例如：请总结今天推荐论文共同关注的问题、方法趋势以及值得继续追踪的方向。"
+            ></textarea>
+            <div class="button-row">
+              <button id="sendChat" class="button">发送问题</button>
+            </div>
+            <pre id="chatOutput" class="chat-output">等待输入问题。</pre>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script type="module" src="../../dist/renderer/renderer.js"></script>
+  </body>
+</html>

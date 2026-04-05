@@ -1,0 +1,31 @@
+{
+  "zotero": {
+    "id": "12345678",
+    "key": "your_zotero_api_key",
+    "includePath": "AI/**",
+    "arxivCategories": ["cs.AI", "cs.CL", "cs.LG"],
+    "maxResults": 8
+  },
+  "llm": {
+    "provider": "chatgpt",
+    "apiKey": "your_llm_api_key",
+    "baseUrl": "https://api.openai.com/v1",
+    "model": "gpt-4o-mini"
+  },
+  "claude": {
+    "apiKey": "your_claude_api_key",
+    "baseUrl": "https://api.anthropic.com",
+    "model": "your_claude_model"
+  },
+  "deepseek": {
+    "apiKey": "your_deepseek_api_key",
+    "baseUrl": "https://api.deepseek.com/v1",
+    "model": "your_deepseek_model"
+  },
+  "feishu": {
+    "webhook": "https://open.feishu.cn/open-apis/bot/v2/hook/your_webhook",
+    "secret": "",
+    "dailyEnabled": false,
+    "dailyTime": "09:00"
+  }
+}

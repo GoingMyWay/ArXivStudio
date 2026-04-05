@@ -1,6 +1,6 @@
 {
   "name": "arxiv-studio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Desktop app for Zotero-based arXiv daily recommendations with Feishu push and LLM chat.",
   "author": "GoingMyWay",
@@ -10,10 +10,10 @@
     "build": "tsc -p tsconfig.main.json && tsc -p tsconfig.renderer.json",
     "start": "npm run build && electron .",
     "dev": "npm run start",
-    "pack": "npm run build && electron-builder --dir",
-    "dist:mac": "npm run build && electron-builder --mac dmg",
-    "dist:win": "npm run build && electron-builder --win nsis",
-    "dist": "npm run build && electron-builder"
+    "pack": "npm run build && electron-builder --dir --publish never",
+    "dist:mac": "npm run build && electron-builder --mac dmg --publish never",
+    "dist:win": "npm run build && electron-builder --win nsis --publish never",
+    "dist": "npm run build && electron-builder --publish never"
   },
   "dependencies": {},
   "devDependencies": {

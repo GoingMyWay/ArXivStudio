@@ -21,6 +21,7 @@ jobs:
       - run: npm run dist:mac
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           files: release/*.dmg
 
   build-win:
@@ -35,4 +36,5 @@ jobs:
       - run: npm run dist:win
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           files: release/*.exe

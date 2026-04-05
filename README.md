@@ -10,8 +10,16 @@ For public releases, end users should download installers from the repository's 
 
 公开发布后，最终用户应当从仓库的 GitHub Releases 页面下载安装包。
 
-- macOS installer: `ArXiv-Studio-<version>-mac-<arch>.dmg`
-- Windows installer: `ArXiv-Studio-<version>-win-x64-setup.exe`
+- Releases page:
+  https://github.com/GoingMyWay/ArXivStudio/releases
+- Latest release page:
+  https://github.com/GoingMyWay/ArXivStudio/releases/latest
+- Current macOS installer:
+  https://github.com/GoingMyWay/ArXivStudio/releases/download/v0.1.1/ArXiv-Studio-0.1.1-mac-arm64.dmg
+- Current Windows installer:
+  https://github.com/GoingMyWay/ArXivStudio/releases/download/v0.1.1/ArXiv-Studio-0.1.1-win-x64-setup.exe
+- macOS installer naming pattern: `ArXiv-Studio-<version>-mac-<arch>.dmg`
+- Windows installer naming pattern: `ArXiv-Studio-<version>-win-x64-setup.exe`
 - Release workflow: [`.github/workflows/release.yml`](./.github/workflows/release.yml)
 
 Push a version tag such as `v0.1.0`, and GitHub Actions will build release assets for macOS and Windows.
